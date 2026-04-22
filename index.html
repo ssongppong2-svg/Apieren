@@ -1,579 +1,66 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Apieren 게시판</title>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=Cinzel:wght@700;900&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet"/>
-  <style>
-    :root {
-      --gold: #FFD700;
-      --gold-light: #FFE85C;
-      --gold-dim: rgba(255, 215, 0, 0.18);
-      --gold-border: rgba(255, 215, 0, 0.55);
-      --black: #0a0a0a;
-      --black-card: #111008;
-      --black-input: #0e0c05;
-      --white: #f5f0e8;
-      --white-dim: rgba(245, 240, 232, 0.65);
-      --shadow-gold: 0 0 24px rgba(255, 215, 0, 0.18), 0 2px 16px rgba(0,0,0,0.7);
-    }
-
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    body {
-      min-height: 100vh;
-      background: linear-gradient(170deg,
-        #0a0800 0%,
-        #0f0c02 20%,
-        #141008 45%,
-        #1a1200 65%,
-        #221800 80%,
-        #2e1f00 100%
-      );
-      font-family: 'Noto Sans KR', sans-serif;
-      color: var(--white);
-      position: relative;
-      overflow-x: hidden;
-    }
-
-    /* Ambient gold glow at bottom */
-    body::before {
-      content: '';
-      position: fixed;
-      bottom: -120px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 900px;
-      height: 400px;
-      background: radial-gradient(ellipse, rgba(255,200,0,0.13) 0%, transparent 70%);
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    /* Subtle noise texture overlay */
-    body::after {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
-      pointer-events: none;
-      z-index: 0;
-      opacity: 0.4;
-    }
-
-    .container {
-      position: relative;
-      z-index: 1;
-      max-width: 860px;
-      margin: 0 auto;
-      padding: 48px 20px 80px;
-    }
-
-    /* ── Header ── */
-    header {
-      text-align: center;
-      margin-bottom: 52px;
-      animation: fadeDown 0.8s ease both;
-    }
-
-    .site-label {
-      font-family: 'Cinzel', serif;
-      font-size: 11px;
-      letter-spacing: 6px;
-      color: var(--gold);
-      text-transform: uppercase;
-      opacity: 0.7;
-      margin-bottom: 12px;
-    }
-
-    header h1 {
-      font-family: 'Cinzel', serif;
-      font-size: clamp(2rem, 6vw, 3.4rem);
-      font-weight: 900;
-      color: var(--gold);
-      letter-spacing: 3px;
-      text-shadow: 0 0 40px rgba(255,215,0,0.4), 0 2px 0 rgba(0,0,0,0.8);
-      line-height: 1.1;
-    }
-
-    .header-rule {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      margin: 18px auto 0;
-      max-width: 380px;
-    }
-    .header-rule span { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, var(--gold-border), transparent); }
-    .header-rule i { color: var(--gold); font-size: 10px; opacity: 0.7; font-style: normal; }
-
-    header p {
-      margin-top: 14px;
-      font-size: 13px;
-      color: var(--white-dim);
-      letter-spacing: 1.5px;
-    }
-
-    /* ── Write Form ── */
-    .write-section {
-      background: linear-gradient(145deg, #181205, #0e0c02);
-      border: 1px solid var(--gold-border);
-      border-radius: 4px;
-      padding: 32px 32px 28px;
-      margin-bottom: 44px;
-      box-shadow: var(--shadow-gold);
-      animation: fadeUp 0.8s 0.1s ease both;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .write-section::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 2px;
-      background: linear-gradient(90deg, transparent 0%, var(--gold) 40%, var(--gold-light) 60%, transparent 100%);
-      opacity: 0.9;
-    }
-
-    .section-title {
-      font-family: 'Noto Serif KR', serif;
-      font-size: 14px;
-      font-weight: 700;
-      color: var(--gold);
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      margin-bottom: 22px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .section-title::before {
-      content: '';
-      display: inline-block;
-      width: 4px;
-      height: 14px;
-      background: var(--gold);
-      border-radius: 2px;
-    }
-
-    .form-row {
-      display: grid;
-      grid-template-columns: 1fr 2fr;
-      gap: 14px;
-      margin-bottom: 14px;
-    }
-
-    @media (max-width: 540px) {
-      .form-row { grid-template-columns: 1fr; }
-      .write-section { padding: 22px 16px 20px; }
-    }
-
-    .field {
-      display: flex;
-      flex-direction: column;
-      gap: 7px;
-    }
-
-    label {
-      font-size: 11px;
-      letter-spacing: 2px;
-      color: rgba(255,215,0,0.6);
-      text-transform: uppercase;
-      font-weight: 500;
-    }
-
-    input[type="text"], textarea {
-      background: var(--black-input);
-      border: 1px solid rgba(255, 215, 0, 0.28);
-      border-radius: 3px;
-      color: var(--white);
-      font-family: 'Noto Sans KR', sans-serif;
-      font-size: 14px;
-      padding: 11px 14px;
-      transition: border-color 0.25s, box-shadow 0.25s;
-      outline: none;
-      resize: none;
-      width: 100%;
-    }
-
-    input[type="text"]:focus, textarea:focus {
-      border-color: var(--gold);
-      box-shadow: 0 0 0 2px rgba(255,215,0,0.12), 0 0 14px rgba(255,215,0,0.08);
-    }
-
-    input[type="text"]::placeholder, textarea::placeholder {
-      color: rgba(255,255,255,0.18);
-    }
-
-    textarea { min-height: 110px; margin-bottom: 4px; }
-
-    .submit-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 9px;
-      margin-top: 8px;
-      background: linear-gradient(135deg, #c8a000, #FFD700 50%, #c8a000);
-      color: #0a0800;
-      font-family: 'Noto Sans KR', sans-serif;
-      font-size: 13px;
-      font-weight: 700;
-      letter-spacing: 2px;
-      padding: 12px 30px;
-      border: none;
-      border-radius: 3px;
-      cursor: pointer;
-      transition: all 0.22s;
-      box-shadow: 0 2px 20px rgba(255,215,0,0.28);
-    }
-
-    .submit-btn:hover {
-      background: linear-gradient(135deg, #FFD700, #FFE85C 50%, #FFD700);
-      box-shadow: 0 4px 28px rgba(255,215,0,0.45);
-      transform: translateY(-1px);
-    }
-
-    .submit-btn:active { transform: translateY(0); }
-
-    .submit-btn svg { width: 15px; height: 15px; }
-
-    /* ── Toast ── */
-    #toast {
-      position: fixed;
-      bottom: 32px;
-      right: 28px;
-      background: #181205;
-      border: 1px solid var(--gold-border);
-      color: var(--gold);
-      font-size: 13px;
-      letter-spacing: 1px;
-      padding: 13px 22px;
-      border-radius: 3px;
-      box-shadow: var(--shadow-gold);
-      opacity: 0;
-      transform: translateY(14px);
-      transition: opacity 0.3s, transform 0.3s;
-      pointer-events: none;
-      z-index: 999;
-    }
-    #toast.show { opacity: 1; transform: translateY(0); }
-
-    /* ── Post List ── */
-    .list-section {
-      animation: fadeUp 0.8s 0.2s ease both;
-    }
-
-    .list-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 20px;
-    }
-
-    .list-header .section-title { margin-bottom: 0; }
-
-    #post-count {
-      font-size: 12px;
-      color: rgba(255,215,0,0.45);
-      letter-spacing: 1px;
-    }
-
-    #posts-list { display: flex; flex-direction: column; gap: 14px; }
-
-    .post-card {
-      background: linear-gradient(145deg, #151005, #0d0b02);
-      border: 1px solid rgba(255,215,0,0.2);
-      border-radius: 4px;
-      padding: 22px 26px 18px;
-      transition: border-color 0.25s, box-shadow 0.25s, transform 0.2s;
-      position: relative;
-      overflow: hidden;
-      animation: fadeUp 0.45s ease both;
-    }
-
-    .post-card::before {
-      content: '';
-      position: absolute;
-      left: 0; top: 0; bottom: 0;
-      width: 3px;
-      background: linear-gradient(180deg, var(--gold), transparent);
-      opacity: 0;
-      transition: opacity 0.25s;
-    }
-
-    .post-card:hover {
-      border-color: rgba(255,215,0,0.5);
-      box-shadow: 0 4px 24px rgba(255,215,0,0.1);
-      transform: translateX(3px);
-    }
-
-    .post-card:hover::before { opacity: 1; }
-
-    .post-meta {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 10px;
-    }
-
-    .post-nick {
-      font-size: 12px;
-      color: var(--gold);
-      font-weight: 700;
-      letter-spacing: 1px;
-      background: var(--gold-dim);
-      padding: 3px 10px;
-      border-radius: 2px;
-      border: 1px solid rgba(255,215,0,0.25);
-    }
-
-    .post-date {
-      font-size: 11px;
-      color: rgba(255,255,255,0.25);
-      letter-spacing: 0.5px;
-      margin-left: auto;
-    }
-
-    .post-title {
-      font-family: 'Noto Serif KR', serif;
-      font-size: 16px;
-      font-weight: 700;
-      color: var(--gold-light);
-      margin-bottom: 8px;
-      line-height: 1.4;
-    }
-
-    .post-body {
-      font-size: 13.5px;
-      color: var(--white-dim);
-      line-height: 1.75;
-      white-space: pre-wrap;
-      word-break: break-word;
-    }
-
-    /* Empty state */
-    .empty-state {
-      text-align: center;
-      padding: 60px 20px;
-      color: rgba(255,215,0,0.3);
-      border: 1px dashed rgba(255,215,0,0.15);
-      border-radius: 4px;
-    }
-    .empty-state svg { margin-bottom: 14px; opacity: 0.4; }
-    .empty-state p { font-size: 13px; letter-spacing: 2px; }
-
-    /* Loading spinner */
-    .spinner {
-      display: flex;
-      justify-content: center;
-      padding: 40px 0;
-    }
-    .spinner-ring {
-      width: 36px;
-      height: 36px;
-      border: 3px solid rgba(255,215,0,0.12);
-      border-top-color: var(--gold);
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite;
-    }
-
-    /* ── Animations ── */
-    @keyframes fadeDown {
-      from { opacity: 0; transform: translateY(-22px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(18px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-
-    /* Scrollbar */
-    ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-track { background: #0a0800; }
-    ::-webkit-scrollbar-thumb { background: rgba(255,215,0,0.25); border-radius: 3px; }
-    ::-webkit-scrollbar-thumb:hover { background: rgba(255,215,0,0.45); }
-  </style>
-</head>
-<body>
-
-  <div class="container">
-
-    <!-- Header -->
-    <header>
-      <div class="site-label">익명 커뮤니티</div>
-      <h1>APIEREN</h1>
-      <div class="header-rule">
-        <span></span><i>✦</i><span></span>
-      </div>
-      <p>자유롭게 생각을 나누는 공간</p>
-    </header>
-
-    <!-- Write Form -->
-    <section class="write-section">
-      <div class="section-title">글쓰기</div>
-      <div class="form-row">
-        <div class="field">
-          <label for="nick">닉네임</label>
-          <input type="text" id="nick" placeholder="익명" maxlength="20"/>
-        </div>
-        <div class="field">
-          <label for="title">제목</label>
-          <input type="text" id="title" placeholder="제목을 입력하세요" maxlength="100"/>
-        </div>
-      </div>
-      <div class="field">
-        <label for="body">내용</label>
-        <textarea id="body" placeholder="내용을 자유롭게 작성하세요..."></textarea>
-      </div>
-      <button class="submit-btn" onclick="submitPost()">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
-        </svg>
-        게시하기
-      </button>
-    </section>
-
-    <!-- Post List -->
-    <section class="list-section">
-      <div class="list-header">
-        <div class="section-title">게시글</div>
-        <span id="post-count">로딩 중...</span>
-      </div>
-      <div id="posts-list">
-        <div class="spinner"><div class="spinner-ring"></div></div>
-      </div>
-    </section>
-
-  </div>
-
-  <!-- Toast -->
-  <div id="toast"></div>
-
-  <script>
-    const SUPABASE_URL = 'https://drvdnuneqlehwsyrpyhw.supabase.co';
-    const SUPABASE_KEY = 'SbWk05vFbZp9LkUFcAQZMw_MmgHaaUO'; // Sb_publishable prefix stripped
-
-    // Helper: fetch wrapper for Supabase REST
-    async function sbFetch(path, options = {}) {
-      const url = `${SUPABASE_URL}/rest/v1/${path}`;
-      const headers = {
-        'apikey': SUPABASE_KEY,
-        'Authorization': `Bearer ${SUPABASE_KEY}`,
-        'Content-Type': 'application/json',
-        'Prefer': options.prefer || '',
-        ...options.extraHeaders
-      };
-      const res = await fetch(url, {
-        method: options.method || 'GET',
-        headers,
-        body: options.body ? JSON.stringify(options.body) : undefined
-      });
-      if (!res.ok) {
-        const err = await res.text();
-        throw new Error(err);
-      }
-      const text = await res.text();
-      return text ? JSON.parse(text) : null;
-    }
-
-    // Load posts
-    async function loadPosts() {
-      try {
-        const data = await sbFetch('posts?select=*&order=created_at.desc', {
-          extraHeaders: { 'Range': '0-99' }
-        });
-        renderPosts(data || []);
-      } catch (e) {
-        document.getElementById('posts-list').innerHTML =
-          `<div class="empty-state"><p>게시글을 불러오지 못했습니다</p><p style="margin-top:8px;font-size:11px;opacity:0.5">${e.message}</p></div>`;
-        document.getElementById('post-count').textContent = '';
-      }
-    }
-
-    function renderPosts(posts) {
-      const el = document.getElementById('posts-list');
-      const countEl = document.getElementById('post-count');
-      countEl.textContent = `총 ${posts.length}개`;
-
-      if (posts.length === 0) {
-        el.innerHTML = `
-          <div class="empty-state">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#FFD700" stroke-width="1.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-            <p>첫 번째 글을 남겨보세요</p>
-          </div>`;
-        return;
-      }
-
-      el.innerHTML = posts.map((p, i) => {
-        const date = new Date(p.created_at);
-        const dateStr = `${date.getFullYear()}.${String(date.getMonth()+1).padStart(2,'0')}.${String(date.getDate()).padStart(2,'0')} ${String(date.getHours()).padStart(2,'0')}:${String(date.getMinutes()).padStart(2,'0')}`;
-        const nick = escapeHtml(p.nickname || '익명');
-        const title = escapeHtml(p.title || '(제목 없음)');
-        const body = escapeHtml(p.content || p.body || '');
-        return `
-          <div class="post-card" style="animation-delay:${i * 0.04}s">
-            <div class="post-meta">
-              <span class="post-nick">${nick}</span>
-              <span class="post-date">${dateStr}</span>
-            </div>
-            <div class="post-title">${title}</div>
-            <div class="post-body">${body}</div>
-          </div>`;
-      }).join('');
-    }
-
-    // Submit post
-    async function submitPost() {
-      const nick  = document.getElementById('nick').value.trim() || '익명';
-      const title = document.getElementById('title').value.trim();
-      const body  = document.getElementById('body').value.trim();
-
-      if (!title) { showToast('제목을 입력해주세요.'); return; }
-      if (!body)  { showToast('내용을 입력해주세요.'); return; }
-
-      const btn = document.querySelector('.submit-btn');
-      btn.disabled = true;
-      btn.textContent = '게시 중...';
-
-      try {
-        await sbFetch('posts', {
-          method: 'POST',
-          prefer: 'return=minimal',
-          body: { nickname: nick, title, content: body }
-        });
-        document.getElementById('nick').value  = '';
-        document.getElementById('title').value = '';
-        document.getElementById('body').value  = '';
-        showToast('✦ 게시글이 등록되었습니다');
-        loadPosts();
-      } catch (e) {
-        showToast('오류: ' + e.message);
-      } finally {
-        btn.disabled = false;
-        btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> 게시하기`;
-      }
-    }
-
-    // Toast
-    let toastTimer;
-    function showToast(msg) {
-      const t = document.getElementById('toast');
-      t.textContent = msg;
-      t.classList.add('show');
-      clearTimeout(toastTimer);
-      toastTimer = setTimeout(() => t.classList.remove('show'), 2800);
-    }
-
-    function escapeHtml(s) {
-      return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-    }
-
-    // Init
-    loadPosts();
-  </script>
-</body>
-</html>
-
+-- 1. 프로필
+create table profiles (
+  id uuid references auth.users primary key,
+  nickname text not null,
+  email text,
+  created_at timestamptz default now()
+);
+
+-- 2. 게시글 (게임/잡담/짤 카테고리)
+create table posts (
+  id bigint generated always as identity primary key,
+  user_id uuid references auth.users,
+  nickname text,
+  title text not null,
+  content text,
+  category text default '잡담' check (category in ('게임','잡담','짤')),
+  images text[] default '{}',
+  likes int default 0,
+  dislikes int default 0,
+  views int default 0,
+  created_at timestamptz default now()
+);
+
+-- 3. 댓글 (대댓글: parent_id 자기참조)
+create table comments (
+  id bigint generated always as identity primary key,
+  post_id bigint references posts on delete cascade,
+  user_id uuid references auth.users,
+  parent_id bigint references comments,
+  nickname text,
+  content text not null,
+  created_at timestamptz default now()
+);
+
+-- 4. 반응 (좋아요/싫어요 — 사용자당 1개 제한)
+create table reactions (
+  id bigint generated always as identity primary key,
+  post_id bigint references posts on delete cascade,
+  user_id uuid references auth.users not null,
+  type text check (type in ('like','dislike')),
+  unique(post_id, user_id)
+);
+
+-- 5. 알림
+create table notifications (
+  id bigint generated always as identity primary key,
+  user_id uuid references auth.users,
+  type text,
+  message text,
+  post_id bigint,
+  is_read boolean default false,
+  created_at timestamptz default now()
+);
+
+-- 6. Storage 버킷 (S3 호환)
+insert into storage.buckets (id, name, public)
+  values ('post-images','post-images',true), ('logos','logos',true)
+  on conflict do nothing;
+
+-- 7. RLS 정책
+alter table posts enable row level security;
+create policy "누구나 읽기" on posts for select using (true);
+create policy "로그인 사용자 작성" on posts for insert with check (auth.uid() = user_id);
+create policy "본인만 수정" on posts for update using (auth.uid() = user_id);
+create policy "본인만 삭제" on posts for delete using (auth.uid() = user_id);
+-- (comments, reactions, notifications, profiles 동일 패턴 적용)
