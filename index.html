@@ -995,11 +995,11 @@ body::after{
 .mod-skill:hover{transform:translateY(-3px);border-color:color-mix(in srgb,var(--c) 55%,transparent);box-shadow:0 8px 28px color-mix(in srgb,var(--c) 22%,transparent);}
 .mod-skill-head{position:relative;display:flex;align-items:center;gap:12px;margin-bottom:10px;}
 .mod-skill-ico{
-  width:48px;height:48px;flex:none;border-radius:var(--radius);
+  width:72px;height:72px;flex:none;border-radius:var(--radius);
   background:rgba(0,0,0,0.45);border:1px solid color-mix(in srgb,var(--c) 40%,transparent);
   display:flex;align-items:center;justify-content:center;
 }
-.mod-skill-ico img{width:36px;height:36px;image-rendering:pixelated;filter:drop-shadow(0 0 6px var(--c));}
+.mod-skill-ico img{width:64px;height:64px;image-rendering:pixelated;filter:drop-shadow(0 0 6px var(--c));}
 .mod-skill-name{font-family:'Noto Serif KR',serif;font-size:16px;font-weight:700;color:var(--c);}
 .mod-skill-tag{font-size:10px;letter-spacing:1.5px;color:var(--text-muted);margin-top:2px;}
 .mod-skill-desc{position:relative;font-size:12.5px;line-height:1.65;color:var(--text-secondary);min-height:62px;}
@@ -1211,7 +1211,7 @@ body::after{
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0-5-5m5 5 5-5M4 21h16"/></svg>
           .mcaddon 다운로드
         </a>
-        <div class="mod-meta"><b>v1.0.0</b> · Android / iOS / Windows · 마인크래프트 1.21.50 이상 · 무료</div>
+        <div class="mod-meta"><b>v1.1.0</b> · Android / iOS / Windows · 마인크래프트 1.21.50 이상 · 무료</div>
       </div>
     </section>
 
@@ -1236,6 +1236,7 @@ body::after{
           <li>월드를 처음 열면 스킬 유물 6종이 <b>자동 지급</b>됩니다.</li>
           <li>핫바에서 유물을 선택하면 화면 아래에 <b>쿨타임과 사용 가능 여부</b>가 표시됩니다.</li>
           <li>유물을 든 채 <b>화면을 탭</b>하면 스킬이 발동됩니다. (PC는 우클릭)</li>
+          <li>타격마다 <b>데미지 숫자</b>가 떠오르고, 15% 확률로 <b>크리티컬</b>(1.6배)이 터집니다. 3초 안에 연속으로 맞히면 <b>콤보</b>가 쌓입니다.</li>
           <li>잃어버렸다면 채팅창에 <code>/scriptevent apieren:kit</code> 을 입력하면 다시 받을 수 있습니다.</li>
         </ol>
       </section>
@@ -1245,7 +1246,7 @@ body::after{
         <div class="mod-faq">
           <details><summary>실험적 기능을 켜야 하나요?</summary><p>아니요. 필요 없습니다. 월드 생성 시 <b>애드온(비헤이비어 팩 + 리소스 팩)</b>만 적용하면 됩니다.</p></details>
           <details><summary>친구와 함께 쓸 수 있나요?</summary><p>같은 월드(렐름·LAN)에 애드온을 적용하면 모두 사용할 수 있습니다. 기본값은 플레이어에게 피해를 주지 않으며, 플레이어 대상 피해는 <code>main.js</code> 의 <code>hitPlayers</code> 로 켤 수 있습니다.</p></details>
-          <details><summary>블록이 파괴되거나 주민·반려동물이 다치나요?</summary><p>스킬은 블록을 직접 파괴하지 않으며, 주민·NPC·길들인 반려동물·플레이어는 공격 대상에서 제외됩니다. 다만 일반 동물은 피해를 입을 수 있고, 번개와 화염 계열 스킬은 주변 가연성 블록(풀·나무 등)에 불이 옮겨붙을 수 있으니 주의하세요.</p></details>
+          <details><summary>블록이 파괴되거나 주민·반려동물이 다치나요?</summary><p>스킬은 블록을 직접 파괴하지 않으며, 주민·NPC·길들인 반려동물·플레이어는 공격 대상에서 제외됩니다. 주민·크리퍼·돼지·플레이어 근처에서는 실제 번개 대신 번개 연출만 나오므로 주민 변이나 충전 크리퍼도 생기지 않습니다. 다만 일반 동물은 피해를 입을 수 있고, 번개와 화염 계열 스킬은 주변 가연성 블록(풀·나무 등)에 불이 옮겨붙을 수 있으니 주의하세요.</p></details>
           <details><summary>설치했는데 아이템이 안 보여요</summary><p>월드 설정 → 애드온에서 <b>두 팩이 모두 활성화</b>되어 있는지 확인하세요. 새 월드가 아니라면 기존 월드에도 팩을 추가해야 합니다.</p></details>
         </div>
       </section>
@@ -2320,17 +2321,17 @@ const Sidebar = {
 const Mod = {
   skills: [
     { id:'thunder', name:'뇌신강림', tag:'THUNDER', color:'#fbbf24', cd:10,
-      desc:'주변 적 최대 6체에게 연쇄 낙뢰를 내리꽂습니다. 적이 없으면 시선 방향에 번개 폭풍을 소환합니다.' },
+      desc:'공중으로 떠올라 기를 모은 뒤, 적과 적 사이를 잇는 전격 아크와 함께 최대 6체에 연쇄 낙뢰를 내리꽂습니다.' },
     { id:'dash', name:'질풍신뢰', tag:'WIND DASH', color:'#5eead4', cd:6,
-      desc:'전방으로 번개처럼 돌진하며 경로의 적을 베어 넘깁니다. 막힌 곳에서는 발동되지 않고 쿨타임도 소모되지 않습니다.' },
+      desc:'잔상을 남기며 전방으로 돌진해 경로의 적을 베어 넘깁니다. 적중하면 쿨타임 50% 감소, 막힌 곳에서는 쿨타임을 소모하지 않습니다.' },
     { id:'inferno', name:'홍련폭염', tag:'INFERNO NOVA', color:'#f97316', cd:12,
-      desc:'발밑에서 화염의 파동이 퍼져 나가 주변 모두를 불태우고 날려 보냅니다.' },
+      desc:'불꽃을 끌어모은 뒤 대폭발. 화염 파동이 퍼져 나가 주변 모두를 불태우고 날려 보내며, 대지에 불씨가 남습니다.' },
     { id:'frost', name:'빙결영역', tag:'FROST DOMAIN', color:'#93c5fd', cd:14,
-      desc:'5초간 이어지는 빙결 영역을 펼쳐 적을 둔화·약화시키고 지속 피해를 입힙니다.' },
+      desc:'5초간 빙결 영역을 펼쳐 적을 둔화·약화시킵니다. 영역이 끝나는 순간 얼어붙은 적이 산산조각 나며 큰 피해를 입습니다.' },
     { id:'meteor', name:'천공유성', tag:'METEOR FALL', color:'#fb923c', cd:20,
-      desc:'조준한 지점에 유성 5개를 연달아 떨어뜨립니다. 지형은 파괴하지 않습니다.' },
+      desc:'낙하 지점에 붉은 경고 표식이 뜬 뒤, 유성 5개가 연달아 떨어져 화면을 뒤흔듭니다. 지형은 파괴하지 않습니다.' },
     { id:'holy', name:'성광치유', tag:'HOLY AURA', color:'#fde68a', cd:16,
-      desc:'나선형 빛으로 주변 아군을 회복시키고 보호막을 부여하며, 언데드를 정화합니다.' },
+      desc:'하늘에서 빛기둥이 내려와 아군을 회복·보호하고 해로운 효과를 정화합니다. 주변 언데드는 빛에 소멸합니다.' },
   ],
   steps: {
     android: [

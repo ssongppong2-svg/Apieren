@@ -1,0 +1,51 @@
+{
+  "format_version": "1.10.0",
+  "particle_effect": {
+    "description": {
+      "identifier": "apieren:shockwave",
+      "basic_render_parameters": {
+        "material": "particles_add",
+        "texture": "textures/particle/apieren_ring"
+      }
+    },
+    "components": {
+      "minecraft:emitter_rate_instant": {
+        "num_particles": 1
+      },
+      "minecraft:emitter_lifetime_once": {
+        "active_time": 0.05
+      },
+      "minecraft:emitter_shape_point": {},
+      "minecraft:particle_lifetime_expression": {
+        "max_lifetime": "math.max(0.15, v.life)"
+      },
+      "minecraft:particle_appearance_billboard": {
+        "size": [
+          "math.max(0.5, v.radius) * math.pow(v.particle_age / v.particle_lifetime, 0.55)",
+          "math.max(0.5, v.radius) * math.pow(v.particle_age / v.particle_lifetime, 0.55)"
+        ],
+        "facing_camera_mode": "emitter_transform_xz",
+        "uv": {
+          "texture_width": 64,
+          "texture_height": 64,
+          "uv": [
+            0,
+            0
+          ],
+          "uv_size": [
+            64,
+            64
+          ]
+        }
+      },
+      "minecraft:particle_appearance_tinting": {
+        "color": [
+          "v.color.r * (1 - v.particle_age / v.particle_lifetime)",
+          "v.color.g * (1 - v.particle_age / v.particle_lifetime)",
+          "v.color.b * (1 - v.particle_age / v.particle_lifetime)",
+          "1"
+        ]
+      }
+    }
+  }
+}
