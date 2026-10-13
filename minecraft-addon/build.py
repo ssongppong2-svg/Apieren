@@ -454,6 +454,15 @@ def package() -> None:
                     z.write(f, f"{arc}/{f.relative_to(folder).as_posix()}")
     print(f"built {OUT} ({OUT.stat().st_size:,} bytes)")
 
+    # .mcaddon 연결이 안 되는 기기를 위한 개별 팩 (.mcpack, manifest가 zip 루트에 위치)
+    for folder, name in ((BP, "Apieren-SkillRelics-BP.mcpack"), (RP, "Apieren-SkillRelics-RP.mcpack")):
+        out = OUT.parent / name
+        with zipfile.ZipFile(out, "w", zipfile.ZIP_DEFLATED) as z:
+            for f in sorted(folder.rglob("*")):
+                if f.is_file():
+                    z.write(f, f.relative_to(folder).as_posix())
+        print(f"built {out} ({out.stat().st_size:,} bytes)")
+
 
 if __name__ == "__main__":
     icons = build_resource_pack()
