@@ -931,6 +931,113 @@ body::after{
 .divider{height:1px;background:var(--border-subtle);margin:6px 0;}
 
 /* ━━━━━━━━━━━━━━━━━━
+   MOD PAGE (Minecraft add-on)
+━━━━━━━━━━━━━━━━━━ */
+.mod-modal{max-width:980px;}
+.mod-hero{
+  position:relative;text-align:center;overflow:hidden;
+  padding:54px 28px 40px;
+  background:
+    radial-gradient(ellipse 70% 90% at 50% 0%,rgba(251,191,36,0.20),transparent 70%),
+    linear-gradient(180deg,#17120a 0%,var(--bg-surface) 100%);
+  border-bottom:1px solid var(--border-subtle);
+}
+.mod-hero::after{
+  content:'';position:absolute;left:50%;top:-40%;width:520px;height:520px;margin-left:-260px;
+  background:conic-gradient(from 0deg,transparent,rgba(251,191,36,0.10),transparent 30%,rgba(251,191,36,0.07),transparent 60%);
+  border-radius:50%;animation:modSpin 18s linear infinite;pointer-events:none;
+}
+@keyframes modSpin{to{transform:rotate(360deg);}}
+.mod-spark{position:absolute;bottom:-8px;width:3px;height:3px;border-radius:50%;background:var(--gold-300);box-shadow:0 0 8px 2px var(--gold-glow);opacity:0;animation:modRise 6s ease-in infinite;pointer-events:none;}
+@keyframes modRise{0%{opacity:0;transform:translateY(0);}15%{opacity:.9;}100%{opacity:0;transform:translateY(-260px);}}
+.mod-eyebrow{position:relative;z-index:1;font-family:'Cinzel',serif;font-size:11px;letter-spacing:5px;color:var(--gold-500);}
+.mod-title{
+  position:relative;z-index:1;margin:10px 0 6px;
+  font-family:'Cinzel Decorative','Noto Serif KR',serif;font-weight:900;
+  font-size:clamp(28px,7vw,50px);line-height:1.15;letter-spacing:2px;
+  background:linear-gradient(180deg,var(--gold-100),var(--gold-400) 55%,var(--gold-600));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 0 18px rgba(251,191,36,0.35));
+}
+.mod-sub{position:relative;z-index:1;font-size:14px;color:var(--text-secondary);line-height:1.7;max-width:520px;margin:0 auto 24px;}
+.mod-cta{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:10px;}
+.mod-dl{
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  min-height:52px;padding:0 34px;border-radius:var(--radius-lg);
+  font-family:'Noto Sans KR',sans-serif;font-size:16px;font-weight:700;letter-spacing:.5px;
+  color:#1a1305;text-decoration:none;cursor:pointer;border:none;
+  background:linear-gradient(135deg,var(--gold-300),var(--gold-500));
+  box-shadow:0 0 28px rgba(251,191,36,0.35),inset 0 1px 0 rgba(255,255,255,0.4);
+  transition:transform var(--t2) var(--ease),box-shadow var(--t2) var(--ease);
+}
+.mod-dl:hover{transform:translateY(-2px);box-shadow:0 0 42px rgba(251,191,36,0.55),inset 0 1px 0 rgba(255,255,255,0.4);}
+.mod-dl:active{transform:translateY(0);}
+.mod-meta{font-size:11.5px;color:var(--text-muted);}
+.mod-meta b{color:var(--text-secondary);font-weight:500;}
+.mod-body{padding:30px 28px 34px;display:flex;flex-direction:column;gap:34px;}
+.mod-sec-title{
+  display:flex;align-items:center;gap:12px;margin-bottom:14px;
+  font-family:'Noto Serif KR',serif;font-size:16px;font-weight:700;color:var(--gold-300);letter-spacing:1px;
+}
+.mod-sec-title::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--border-default),transparent);}
+.mod-skills{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+.mod-skill{
+  --c:var(--gold-400);
+  position:relative;padding:18px 16px 16px;border-radius:var(--radius-lg);
+  background:linear-gradient(160deg,var(--bg-elevated),var(--bg-surface));
+  border:1px solid var(--border-subtle);overflow:hidden;
+  transition:transform var(--t2) var(--ease),border-color var(--t2) var(--ease),box-shadow var(--t2) var(--ease);
+}
+.mod-skill::before{
+  content:'';position:absolute;inset:0;pointer-events:none;opacity:.5;
+  background:radial-gradient(circle at 18% 0%,color-mix(in srgb,var(--c) 22%,transparent),transparent 60%);
+}
+.mod-skill:hover{transform:translateY(-3px);border-color:color-mix(in srgb,var(--c) 55%,transparent);box-shadow:0 8px 28px color-mix(in srgb,var(--c) 22%,transparent);}
+.mod-skill-head{position:relative;display:flex;align-items:center;gap:12px;margin-bottom:10px;}
+.mod-skill-ico{
+  width:72px;height:72px;flex:none;border-radius:var(--radius);
+  background:rgba(0,0,0,0.45);border:1px solid color-mix(in srgb,var(--c) 40%,transparent);
+  display:flex;align-items:center;justify-content:center;
+}
+.mod-skill-ico img{width:64px;height:64px;image-rendering:pixelated;filter:drop-shadow(0 0 6px var(--c));}
+.mod-skill-name{font-family:'Noto Serif KR',serif;font-size:16px;font-weight:700;color:var(--c);}
+.mod-skill-tag{font-size:10px;letter-spacing:1.5px;color:var(--text-muted);margin-top:2px;}
+.mod-skill-desc{position:relative;font-size:12.5px;line-height:1.65;color:var(--text-secondary);min-height:62px;}
+.mod-skill-foot{position:relative;display:flex;justify-content:space-between;margin-top:12px;padding-top:10px;border-top:1px solid var(--border-subtle);font-size:11px;color:var(--text-muted);}
+.mod-skill-foot b{color:var(--c);font-weight:700;}
+.mod-tabs{display:inline-flex;gap:4px;padding:4px;margin-bottom:14px;background:var(--bg-elevated);border:1px solid var(--border-subtle);border-radius:var(--radius-lg);}
+.mod-tab{
+  min-height:38px;padding:0 20px;border:none;border-radius:var(--radius);cursor:pointer;
+  font-family:'Noto Sans KR',sans-serif;font-size:13px;color:var(--text-secondary);background:none;
+  transition:all var(--t1) var(--ease);
+}
+.mod-tab.active{background:var(--gold-dim);color:var(--gold-300);box-shadow:inset 0 0 0 1px var(--border-default);}
+.mod-steps{counter-reset:s;display:flex;flex-direction:column;gap:10px;list-style:none;}
+.mod-steps li{
+  counter-increment:s;position:relative;padding:14px 16px 14px 56px;
+  background:var(--bg-elevated);border:1px solid var(--border-subtle);border-radius:var(--radius-lg);
+  font-size:13.5px;line-height:1.65;color:var(--text-secondary);
+}
+.mod-steps li::before{
+  content:counter(s);position:absolute;left:14px;top:50%;transform:translateY(-50%);
+  width:30px;height:30px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Cinzel',serif;font-weight:700;font-size:14px;color:#1a1305;
+  background:linear-gradient(135deg,var(--gold-300),var(--gold-600));
+}
+.mod-steps li b{color:var(--text-primary);font-weight:500;}
+.mod-steps code,.mod-faq code{padding:1px 7px;border-radius:4px;background:rgba(0,0,0,0.45);border:1px solid var(--border-subtle);color:var(--gold-300);font-size:12px;word-break:break-all;}
+.mod-faq{display:flex;flex-direction:column;gap:8px;}
+.mod-faq details{background:var(--bg-elevated);border:1px solid var(--border-subtle);border-radius:var(--radius-lg);overflow:hidden;}
+.mod-faq summary{cursor:pointer;list-style:none;padding:14px 16px;min-height:48px;display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:13.5px;color:var(--text-primary);}
+.mod-faq summary::-webkit-details-marker{display:none;}
+.mod-faq summary::after{content:'+';font-size:18px;color:var(--gold-500);transition:transform var(--t2) var(--ease);}
+.mod-faq details[open] summary::after{transform:rotate(45deg);}
+.mod-faq details p{padding:0 16px 15px;font-size:13px;line-height:1.7;color:var(--text-secondary);}
+.mod-note{font-size:11.5px;color:var(--text-muted);text-align:center;line-height:1.7;}
+.nav-btn.mod-nav{color:var(--gold-300);}
+
+/* ━━━━━━━━━━━━━━━━━━
    RESPONSIVE
 ━━━━━━━━━━━━━━━━━━ */
 @media(max-width:1100px){
@@ -948,6 +1055,19 @@ body::after{
   .pv-title{font-size:18px;}
   .modal{border-radius:var(--radius-lg);}
   .fg-2{grid-template-columns:1fr;}
+  .mod-hero{padding:44px 18px 32px;}
+  .mod-body{padding:24px 16px 28px;gap:28px;}
+  .mod-skills{grid-template-columns:1fr;}
+  .mod-skill-desc{min-height:0;}
+  .mod-dl{width:100%;}
+  .mod-tabs{display:flex;}
+  .mod-tab{flex:1;padding:0 8px;}
+}
+@media(min-width:721px) and (max-width:900px){
+  .mod-skills{grid-template-columns:repeat(2,1fr);}
+}
+@media(prefers-reduced-motion:reduce){
+  .mod-hero::after,.mod-spark{animation:none;}
 }
 </style>
 </head>
@@ -967,6 +1087,7 @@ body::after{
   <div class="header-spacer"></div>
   <nav class="header-nav" id="desktop-nav">
     <button class="nav-btn" onclick="UI.go('board')">게시판</button>
+    <button class="nav-btn mod-nav" onclick="UI.go('mod')">⚔ 마크 모드</button>
     <button class="nav-btn" id="notif-trigger" onclick="UI.toggleNotif()">
       알림<span class="badge-dot hidden" id="notif-dot"></span>
     </button>
@@ -980,6 +1101,7 @@ body::after{
 <!-- ══════ MOBILE MENU ══════ -->
 <div id="mobile-menu">
   <button onclick="UI.go('board');UI.toggleMenu()">📋 게시판</button>
+  <button onclick="UI.go('mod');UI.toggleMenu()" style="color:var(--gold-300)">⚔ 마크 모드</button>
   <button onclick="UI.toggleNotif();UI.toggleMenu()">🔔 알림</button>
   <div id="mobile-auth-area"></div>
 </div>
@@ -1066,6 +1188,71 @@ body::after{
   <div class="modal" id="view-modal" style="max-width:860px">
     <button class="modal-close" onclick="UI.forceClose('view-overlay')">✕</button>
     <div id="view-content"></div>
+  </div>
+</div>
+
+<!-- Minecraft Mod -->
+<div class="overlay" id="mod-overlay" onclick="UI.closeOverlay('mod-overlay',event)">
+  <div class="modal mod-modal">
+    <button class="modal-close" onclick="UI.forceClose('mod-overlay')">✕</button>
+
+    <section class="mod-hero">
+      <span class="mod-spark" style="left:12%;animation-delay:0s"></span>
+      <span class="mod-spark" style="left:28%;animation-delay:1.8s"></span>
+      <span class="mod-spark" style="left:46%;animation-delay:3.2s"></span>
+      <span class="mod-spark" style="left:63%;animation-delay:.9s"></span>
+      <span class="mod-spark" style="left:79%;animation-delay:2.6s"></span>
+      <span class="mod-spark" style="left:91%;animation-delay:4.1s"></span>
+      <div class="mod-eyebrow">MINECRAFT · BEDROCK ADD-ON</div>
+      <h2 class="mod-title">SKILL RELICS</h2>
+      <p class="mod-sub">손에 쥐고 화면을 탭하면 하늘이 갈라지고 대지가 불타오릅니다.<br/>모바일 마인크래프트를 위한 6가지 스킬 유물.</p>
+      <div class="mod-cta">
+        <a class="mod-dl" id="mod-dl" href="downloads/Apieren-SkillRelics.mcaddon" download onclick="Mod.onDownload()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0-5-5m5 5 5-5M4 21h16"/></svg>
+          .mcaddon 다운로드
+        </a>
+        <div class="mod-meta"><b>v1.1.0</b> · Android / iOS / Windows · 마인크래프트 1.21.50 이상 · 무료</div>
+      </div>
+    </section>
+
+    <div class="mod-body">
+      <section>
+        <h3 class="mod-sec-title">스킬 유물 6종</h3>
+        <div class="mod-skills" id="mod-skills"></div>
+      </section>
+
+      <section>
+        <h3 class="mod-sec-title">설치 방법</h3>
+        <div class="mod-tabs" role="tablist">
+          <button class="mod-tab active" id="mod-tab-android" role="tab" onclick="Mod.tab('android')">Android</button>
+          <button class="mod-tab" id="mod-tab-ios" role="tab" onclick="Mod.tab('ios')">iPhone / iPad</button>
+        </div>
+        <ol class="mod-steps" id="mod-steps"></ol>
+      </section>
+
+      <section>
+        <h3 class="mod-sec-title">사용법</h3>
+        <ol class="mod-steps">
+          <li>월드를 처음 열면 스킬 유물 6종이 <b>자동 지급</b>됩니다.</li>
+          <li>핫바에서 유물을 선택하면 화면 아래에 <b>쿨타임과 사용 가능 여부</b>가 표시됩니다.</li>
+          <li>유물을 든 채 <b>화면을 탭</b>하면 스킬이 발동됩니다. (PC는 우클릭)</li>
+          <li>타격마다 <b>데미지 숫자</b>가 떠오르고, 15% 확률로 <b>크리티컬</b>(1.6배)이 터집니다. 3초 안에 연속으로 맞히면 <b>콤보</b>가 쌓입니다.</li>
+          <li>잃어버렸다면 채팅창에 <code>/scriptevent apieren:kit</code> 을 입력하면 다시 받을 수 있습니다.</li>
+        </ol>
+      </section>
+
+      <section>
+        <h3 class="mod-sec-title">자주 묻는 질문</h3>
+        <div class="mod-faq">
+          <details><summary>실험적 기능을 켜야 하나요?</summary><p>아니요. 필요 없습니다. 월드 생성 시 <b>애드온(비헤이비어 팩 + 리소스 팩)</b>만 적용하면 됩니다.</p></details>
+          <details><summary>친구와 함께 쓸 수 있나요?</summary><p>같은 월드(렐름·LAN)에 애드온을 적용하면 모두 사용할 수 있습니다. 기본값은 플레이어에게 피해를 주지 않으며, 플레이어 대상 피해는 <code>main.js</code> 의 <code>hitPlayers</code> 로 켤 수 있습니다.</p></details>
+          <details><summary>블록이 파괴되거나 주민·반려동물이 다치나요?</summary><p>스킬은 블록을 직접 파괴하지 않으며, 주민·NPC·길들인 반려동물·플레이어는 공격 대상에서 제외됩니다. 주민·크리퍼·돼지·플레이어 근처에서는 실제 번개 대신 번개 연출만 나오므로 주민 변이나 충전 크리퍼도 생기지 않습니다. 다만 일반 동물은 피해를 입을 수 있고, 번개와 화염 계열 스킬은 주변 가연성 블록(풀·나무 등)에 불이 옮겨붙을 수 있으니 주의하세요.</p></details>
+          <details><summary>설치했는데 아이템이 안 보여요</summary><p>월드 설정 → 애드온에서 <b>두 팩이 모두 활성화</b>되어 있는지 확인하세요. 새 월드가 아니라면 기존 월드에도 팩을 추가해야 합니다.</p></details>
+        </div>
+      </section>
+
+      <p class="mod-note">APIEREN 팬 제작 애드온이며 Mojang / Microsoft 와 관련이 없습니다.<br/>Minecraft 는 Mojang Synergies AB 의 상표입니다.</p>
+    </div>
   </div>
 </div>
 
@@ -2128,6 +2315,75 @@ const Sidebar = {
 /* ═══════════════════════════════════════════════════════════
    UI
 ═══════════════════════════════════════════════════════════ */
+/* ═══════════════════════════════════════════════════════════
+   MOD — Minecraft add-on 소개 / 다운로드
+═══════════════════════════════════════════════════════════ */
+const Mod = {
+  skills: [
+    { id:'thunder', name:'뇌신강림', tag:'THUNDER', color:'#fbbf24', cd:10,
+      desc:'공중으로 떠올라 기를 모은 뒤, 적과 적 사이를 잇는 전격 아크와 함께 최대 6체에 연쇄 낙뢰를 내리꽂습니다.' },
+    { id:'dash', name:'질풍신뢰', tag:'WIND DASH', color:'#5eead4', cd:6,
+      desc:'잔상을 남기며 전방으로 돌진해 경로의 적을 베어 넘깁니다. 적중하면 쿨타임 50% 감소, 막힌 곳에서는 쿨타임을 소모하지 않습니다.' },
+    { id:'inferno', name:'홍련폭염', tag:'INFERNO NOVA', color:'#f97316', cd:12,
+      desc:'불꽃을 끌어모은 뒤 대폭발. 화염 파동이 퍼져 나가 주변 모두를 불태우고 날려 보내며, 대지에 불씨가 남습니다.' },
+    { id:'frost', name:'빙결영역', tag:'FROST DOMAIN', color:'#93c5fd', cd:14,
+      desc:'5초간 빙결 영역을 펼쳐 적을 둔화·약화시킵니다. 영역이 끝나는 순간 얼어붙은 적이 산산조각 나며 큰 피해를 입습니다.' },
+    { id:'meteor', name:'천공유성', tag:'METEOR FALL', color:'#fb923c', cd:20,
+      desc:'낙하 지점에 붉은 경고 표식이 뜬 뒤, 유성 5개가 연달아 떨어져 화면을 뒤흔듭니다. 지형은 파괴하지 않습니다.' },
+    { id:'holy', name:'성광치유', tag:'HOLY AURA', color:'#fde68a', cd:16,
+      desc:'하늘에서 빛기둥이 내려와 아군을 회복·보호하고 해로운 효과를 정화합니다. 주변 언데드는 빛에 소멸합니다.' },
+  ],
+  steps: {
+    android: [
+      '위의 <b>.mcaddon 다운로드</b> 버튼을 누릅니다.',
+      '다운로드가 끝나면 알림 또는 <b>내 파일 / 다운로드</b> 폴더에서 파일을 탭합니다.',
+      '<b>Minecraft</b> 로 열기를 선택하면 자동으로 가져오기가 진행됩니다.',
+      '월드 설정 → <b>애드온</b> 에서 <b>비헤이비어 팩</b>과 <b>리소스 팩</b>을 모두 활성화한 뒤 플레이하세요.',
+    ],
+    ios: [
+      '<b>Safari</b> 에서 이 페이지를 열고 <b>.mcaddon 다운로드</b> 를 누릅니다.',
+      '주소창 옆 다운로드 아이콘 → 파일을 탭 → 공유 버튼 → <b>Minecraft</b> 를 선택합니다. (보이지 않으면 “더 보기”)',
+      '가져오기가 끝나면 월드 설정 → <b>애드온</b> 에서 <b>비헤이비어 팩</b>과 <b>리소스 팩</b>을 모두 활성화합니다.',
+      '월드에 입장하면 스킬 유물이 자동 지급됩니다.',
+    ],
+  },
+  rendered: false,
+
+  render() {
+    if (this.rendered) return;
+    this.rendered = true;
+    document.getElementById('mod-skills').innerHTML = this.skills.map(s => `
+      <article class="mod-skill" style="--c:${s.color}">
+        <div class="mod-skill-head">
+          <div class="mod-skill-ico"><img src="minecraft-addon/resource_pack/textures/items/skill_${s.id}.png" alt="" loading="lazy"/></div>
+          <div><div class="mod-skill-name">${h(s.name)}</div><div class="mod-skill-tag">${h(s.tag)}</div></div>
+        </div>
+        <p class="mod-skill-desc">${h(s.desc)}</p>
+        <div class="mod-skill-foot"><span>쿨타임</span><b>${s.cd}초</b></div>
+      </article>`).join('');
+    this.tab(/iPhone|iPad|iPod/i.test(navigator.userAgent) ? 'ios' : 'android');
+  },
+
+  tab(os) {
+    document.getElementById('mod-steps').innerHTML = this.steps[os].map(t => `<li>${t}</li>`).join('');
+    ['android','ios'].forEach(k => {
+      const b = document.getElementById('mod-tab-' + k);
+      b.classList.toggle('active', k === os);
+      b.setAttribute('aria-selected', k === os);
+    });
+  },
+
+  open() {
+    this.render();
+    UI.showOverlay('mod-overlay');
+    document.getElementById('mod-overlay').scrollTop = 0;
+  },
+
+  onDownload() {
+    toast('다운로드를 시작합니다. 설치 방법을 확인하세요!');
+  },
+};
+
 const UI = {
   menuOpen: false,
   notifOpen: false,
@@ -2136,6 +2392,12 @@ const UI = {
     if (page==='board') {
       this.forceClose('view-overlay');
       this.forceClose('write-overlay');
+      this.forceClose('mod-overlay');
+    } else if (page==='mod') {
+      this.forceClose('view-overlay');
+      this.forceClose('write-overlay');
+      this.closeNotif();
+      Mod.open();
     }
   },
 

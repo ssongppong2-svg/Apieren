@@ -1,0 +1,24 @@
+{
+  "resource_pack_name": "apieren",
+  "texture_name": "atlas.items",
+  "texture_data": {
+    "apieren_skill_thunder": {
+      "textures": "textures/items/skill_thunder"
+    },
+    "apieren_skill_dash": {
+      "textures": "textures/items/skill_dash"
+    },
+    "apieren_skill_inferno": {
+      "textures": "textures/items/skill_inferno"
+    },
+    "apieren_skill_frost": {
+      "textures": "textures/items/skill_frost"
+    },
+    "apieren_skill_meteor": {
+      "textures": "textures/items/skill_meteor"
+    },
+    "apieren_skill_holy": {
+      "textures": "textures/items/skill_holy"
+    }
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "format_version": 2,
+  "header": {
+    "name": "APIEREN Skill Relics RP",
+    "description": "스킬 유물 아이콘 · 파티클 리소스",
+    "uuid": "6f1c2a4e-3b7d-4c59-9a10-5d2e8b7f1a11",
+    "version": [
+      1,
+      1,
+      0
+    ],
+    "min_engine_version": [
+      1,
+      21,
+      50
+    ]
+  },
+  "modules": [
+    {
+      "type": "resources",
+      "uuid": "6f1c2a4e-3b7d-4c59-9a10-5d2e8b7f1a12",
+      "version": [
+        1,
+        1,
+        0
+      ]
+    }
+  ]
+}
