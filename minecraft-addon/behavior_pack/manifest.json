@@ -1,0 +1,54 @@
+{
+  "format_version": 2,
+  "header": {
+    "name": "APIEREN Skill Relics",
+    "description": "§6아이템을 들고 화면을 탭하면 웅장한 스킬이 발동됩니다.",
+    "uuid": "6f1c2a4e-3b7d-4c59-9a10-5d2e8b7f1a01",
+    "version": [
+      1,
+      0,
+      0
+    ],
+    "min_engine_version": [
+      1,
+      21,
+      50
+    ]
+  },
+  "modules": [
+    {
+      "type": "data",
+      "uuid": "6f1c2a4e-3b7d-4c59-9a10-5d2e8b7f1a02",
+      "version": [
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "type": "script",
+      "language": "javascript",
+      "uuid": "6f1c2a4e-3b7d-4c59-9a10-5d2e8b7f1a03",
+      "version": [
+        1,
+        0,
+        0
+      ],
+      "entry": "scripts/main.js"
+    }
+  ],
+  "dependencies": [
+    {
+      "uuid": "6f1c2a4e-3b7d-4c59-9a10-5d2e8b7f1a11",
+      "version": [
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "module_name": "@minecraft/server",
+      "version": "1.14.0"
+    }
+  ]
+}

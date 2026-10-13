@@ -1,0 +1,35 @@
+{
+  "format_version": "1.20.10",
+  "minecraft:recipe_shaped": {
+    "description": {
+      "identifier": "apieren:recipe_skill_thunder"
+    },
+    "tags": [
+      "crafting_table"
+    ],
+    "pattern": [
+      " GN",
+      " SG",
+      "S  "
+    ],
+    "key": {
+      "G": {
+        "item": "minecraft:copper_ingot"
+      },
+      "N": {
+        "item": "minecraft:lightning_rod"
+      },
+      "S": {
+        "item": "minecraft:stick"
+      }
+    },
+    "unlock": [
+      {
+        "item": "minecraft:copper_ingot"
+      }
+    ],
+    "result": {
+      "item": "apieren:skill_thunder"
+    }
+  }
+}
